@@ -1,12 +1,35 @@
-*.class
+# Intelli IDEA / Android Studio files
+*.iml
+.idea/
+out/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Eclipse files
+.project
+.classpath
+.settings/
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# Auto generated files by IDE
+bin/
+gen/
+captures/
+proguard_logs/
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Auto generated files by gradle
+.gradle/
+build/
+
+# Gradle Configuration
+build.gradle
+settings.gradle
+gradle.properties
+
+# Android specific files
+*.apk
+local.properties
+
+# Module libs
+# libs/*.jar
+
+# Others
+.DS_Store
+.svn/
