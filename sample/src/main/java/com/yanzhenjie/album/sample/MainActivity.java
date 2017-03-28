@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mGridAdapter = new GridAdapter();
+        mGridAdapter = new GridAdapter(this);
         mRecyclerView.setAdapter(mGridAdapter);
     }
 
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         // 3. 指定风格，并指定选择数量，如果不想限制数量传入Integer.MAX_VALUE;
         Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO
                 , 9                                                         // 指定选择数量。
-                , ContextCompat.getColor(this, R.color.colorPrimary)        // 指定Toolbar的颜色。
-                , ContextCompat.getColor(this, R.color.colorPrimaryDark));  // 指定状态栏的颜色。
+                , ContextCompat.getColor(this, R.color.colorBlue)        // 指定Toolbar的颜色。
+                , ContextCompat.getColor(this, R.color.colorBlue));  // 指定状态栏的颜色。
 
     }
 

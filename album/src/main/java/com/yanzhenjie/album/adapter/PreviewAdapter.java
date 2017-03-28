@@ -58,7 +58,7 @@ public class PreviewAdapter extends PagerAdapter {
         imageView.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
         container.addView(imageView);
         final PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-        Glide.with(ctx)
+        Glide.with(ctx.getApplicationContext())
                 .load(mAlbumImages.get(position).getPath())
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
@@ -93,7 +93,7 @@ public class PreviewAdapter extends PagerAdapter {
                             attacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
                         }
 
-                        return false;
+                        return true;
                     }
                 })
                 .override(DisplayUtils.screenWidth, contentHeight)

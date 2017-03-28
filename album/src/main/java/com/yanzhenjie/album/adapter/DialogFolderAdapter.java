@@ -113,7 +113,7 @@ public class DialogFolderAdapter extends RecyclerView.Adapter<DialogFolderAdapte
             mRbCheck.setChecked(albumFolder.isChecked());
 
             if (albumImages.size() > 0) {
-                Glide.with(ctx)
+                Glide.with(ctx.getApplicationContext())
                         .load(albumImages.get(0).getPath())
                         .override(size, size)
                         .into(mIvImage);

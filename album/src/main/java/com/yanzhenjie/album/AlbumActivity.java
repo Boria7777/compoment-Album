@@ -60,7 +60,7 @@ import java.util.concurrent.Executors;
  * <p>全局相册，选择图片入口。</p>
  * Created by Yan Zhenjie on 2016/10/17.
  */
-public class AlbumActivity extends AppCompatActivity {
+public class AlbumActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int PERMISSION_REQUEST_STORAGE = 200;
     private static final int PERMISSION_REQUEST_CAMERA = 201;
@@ -356,7 +356,7 @@ public class AlbumActivity extends AppCompatActivity {
      */
     public void setPreviewCount(int count) {
         mBtnPreview.setText(" (" + count + ")");
-        mToolbar.setSubtitle(count + "/" + mAllowSelectCount);
+//        mToolbar.setSubtitle(count + "/" + mAllowSelectCount);
     }
 
     /**
@@ -476,7 +476,7 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_album, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -540,5 +540,13 @@ public class AlbumActivity extends AppCompatActivity {
             mAlbumFolderSelectedDialog.behaviorHide();
         dismissPreviewDialog();
         super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id==R.id.complete){
+            toResult(false);
+        }
     }
 }

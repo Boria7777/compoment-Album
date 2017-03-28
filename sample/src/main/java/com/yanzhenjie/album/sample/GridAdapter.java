@@ -82,7 +82,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ImageViewHolde
         }
 
         public void loadImage(String imagePath) {
-            Glide.with(ctx)
+            Glide.with(ctx.getApplicationContext())
                     .load(imagePath)
                     .override(size, size)
                     .into(mIvIcon);

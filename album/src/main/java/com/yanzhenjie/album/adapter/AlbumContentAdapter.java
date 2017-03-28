@@ -158,10 +158,10 @@ public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         public void setData(AlbumImage albumImage) {
-            Glide.with(ctx)
-                    .load(albumImage.getPath())
-                    .override(size, size)
-                    .into(mIvImage);
+                Glide.with(ctx.getApplicationContext())
+                        .load(albumImage.getPath())
+                        .override(size, size)
+                        .into(mIvImage);
             mCompatCheckBox.setChecked(albumImage.isChecked());
         }
 
