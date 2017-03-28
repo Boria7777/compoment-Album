@@ -75,8 +75,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     private Toolbar mToolbar;
     private TextView completeTxt;
+    private TextView previewTxt;
     private RelativeLayout completeLayout;
-    private Button mBtnPreview;
+//    private Button mBtnPreview;
     private Button mBtnSwitchFolder;
     private RecyclerView mRvContentList;
     private GridLayoutManager mGridLayoutManager;
@@ -123,15 +124,16 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private void initializeMain(int statusColor) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         completeTxt = (TextView) findViewById(R.id.complete);
+        previewTxt = (TextView) findViewById(R.id.previewtextview);
         completeLayout = (RelativeLayout) findViewById(R.id.complete_layout);
-        mBtnPreview = (Button) findViewById(R.id.btn_preview);
+//        mBtnPreview = (Button) findViewById(R.id.btn_preview);
         mBtnSwitchFolder = (Button) findViewById(R.id.btn_switch_dir);
         mRvContentList = (RecyclerView) findViewById(R.id.rv_content_list);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mBtnPreview.setOnClickListener(mPreviewClick);
+        previewTxt.setOnClickListener(mPreviewClick);
         mBtnSwitchFolder.setOnClickListener(mSwitchDirClick);
 
         setStatusBarColor(statusColor);
@@ -361,11 +363,12 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      * @param count 数字。
      */
     public void setPreviewCount(int count) {
-        mBtnPreview.setText(" (" + count + ")");
         if (count == 0) {
+            previewTxt.setText("预览");
             completeTxt.setText("完成");
             completeLayout.setBackgroundResource(R.drawable.album_btn_unpressed);
         } else if (count > 0) {
+            previewTxt.setText("预览"+" (" + count + ")");
             completeTxt.setText("完成" + "(" + count + "/" + mAllowSelectCount + ")");
             completeLayout.setBackgroundResource(R.drawable.album_btn_pressed);
         }

@@ -46,7 +46,19 @@
             android:maxLines="1"
             android:maxWidth="@dimen/album_dp_200"
             android:textColor="@color/albumWhite"
-            android:textSize="@dimen/album_sp_16" />
+            android:textSize="@dimen/album_sp_16"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/previewtextview"
+            style="@style/AlbumButtonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="预览"
+            android:textColor="@color/colorblue"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
