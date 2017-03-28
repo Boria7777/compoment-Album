@@ -34,6 +34,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yanzhenjie.album.adapter.AlbumContentAdapter;
@@ -72,6 +74,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private static ExecutorService sRunnableExecutor = Executors.newSingleThreadExecutor();
 
     private Toolbar mToolbar;
+    private TextView completeTxt;
+    private RelativeLayout completeLayout;
     private Button mBtnPreview;
     private Button mBtnSwitchFolder;
     private RecyclerView mRvContentList;
@@ -118,6 +122,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      */
     private void initializeMain(int statusColor) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        completeTxt = (TextView) findViewById(R.id.complete);
+        completeLayout = (RelativeLayout) findViewById(R.id.complete_layout);
         mBtnPreview = (Button) findViewById(R.id.btn_preview);
         mBtnSwitchFolder = (Button) findViewById(R.id.btn_switch_dir);
         mRvContentList = (RecyclerView) findViewById(R.id.rv_content_list);
@@ -356,6 +362,14 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      */
     public void setPreviewCount(int count) {
         mBtnPreview.setText(" (" + count + ")");
+        if (count == 0) {
+            completeTxt.setText("完成");
+            completeLayout.setBackgroundResource(R.drawable.album_btn_unpressed);
+        } else if (count > 0) {
+            completeTxt.setText("完成" + "(" + count + "/" + mAllowSelectCount + ")");
+            completeLayout.setBackgroundResource(R.drawable.album_btn_pressed);
+        }
+
 //        mToolbar.setSubtitle(count + "/" + mAllowSelectCount);
     }
 
@@ -423,6 +437,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         mCheckFolderIndex = index;
         AlbumFolder albumFolder = mAlbumFolders.get(index);
         mBtnSwitchFolder.setText(albumFolder.getName());
+        mToolbar.setTitle(albumFolder.getName());
         mAlbumContentAdapter.notifyDataSetChanged(albumFolder.getPhotos());
         mGridLayoutManager.scrollToPosition(0);
     }
@@ -545,7 +560,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id==R.id.complete){
+        if (id == R.id.complete) {
             toResult(false);
         }
     }

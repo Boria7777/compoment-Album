@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PhotoAlbum</string>
+    <string name="app_name">图片和视频</string>
     <string name="menu_check_image">选择照骗</string>
 
     <string name="title_dialog_hint">提示</string>
