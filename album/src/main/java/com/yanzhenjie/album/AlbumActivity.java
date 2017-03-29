@@ -27,7 +27,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -40,6 +39,7 @@ import android.widget.Toast;
 
 import com.yanzhenjie.album.adapter.AlbumContentAdapter;
 import com.yanzhenjie.album.dialog.AlbumFolderDialog;
+import com.yanzhenjie.album.dialog.AlbumFolderDialogFragment;
 import com.yanzhenjie.album.dialog.AlbumPreviewDialog;
 import com.yanzhenjie.album.entity.AlbumFolder;
 import com.yanzhenjie.album.entity.AlbumImage;
@@ -53,7 +53,6 @@ import com.yanzhenjie.album.util.DisplayUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -77,23 +76,24 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private TextView completeTxt;
     private TextView previewTxt;
     private RelativeLayout completeLayout;
-//    private Button mBtnPreview;
+    //    private Button mBtnPreview;
     private Button mBtnSwitchFolder;
     private RecyclerView mRvContentList;
     private GridLayoutManager mGridLayoutManager;
     private AlbumContentAdapter mAlbumContentAdapter;
 
     private int mToolBarColor;
+    private int statusColor;
     private int mAllowSelectCount;
     private int mCheckFolderIndex;
 
-    private List<AlbumFolder> mAlbumFolders;
-    private List<AlbumImage> mCheckedImages = new ArrayList<>(1);
-    private List<AlbumImage> mTempCheckedImages;
+    private ArrayList<AlbumFolder> mAlbumFolders;
+    private ArrayList<AlbumImage> mCheckedImages = new ArrayList<>(1);
+    private ArrayList<AlbumImage> mTempCheckedImages;
 
     private AlbumFolderDialog mAlbumFolderSelectedDialog;
     private AlbumPreviewDialog mAlbumPreviewDialog;
-
+    private AlbumFolderDialogFragment mAlbumFolderFragment;
     private String mCameraFilePath;
 
     @Override
@@ -108,7 +108,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
         Intent intent = getIntent();
         mToolBarColor = intent.getIntExtra(Album.KEY_INPUT_TOOLBAR_COLOR, ResourcesCompat.getColor(getResources(), R.color.albumColorPrimary, null));
-        int statusColor = intent.getIntExtra(Album.KEY_INPUT_STATUS_COLOR, ResourcesCompat.getColor(getResources(), R.color.albumColorPrimaryDark, null));
+        statusColor = intent.getIntExtra(Album.KEY_INPUT_STATUS_COLOR, ResourcesCompat.getColor(getResources(), R.color.albumColorPrimaryDark, null));
         mAllowSelectCount = intent.getIntExtra(Album.KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
         int normalColor = ContextCompat.getColor(this, R.color.albumWhiteGray);
 
@@ -368,7 +368,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             completeTxt.setText("完成");
             completeLayout.setBackgroundResource(R.drawable.album_btn_unpressed);
         } else if (count > 0) {
-            previewTxt.setText("预览"+" (" + count + ")");
+            previewTxt.setText("预览" + " (" + count + ")");
             completeTxt.setText("完成" + "(" + count + "/" + mAllowSelectCount + ")");
             completeLayout.setBackgroundResource(R.drawable.album_btn_pressed);
         }
@@ -382,16 +382,21 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private View.OnClickListener mSwitchDirClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (mAlbumFolderSelectedDialog == null) {
-                mAlbumFolderSelectedDialog = new AlbumFolderDialog(AlbumActivity.this, mToolBarColor, mAlbumFolders, new OnCompatItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        showAlbum(position);
-                    }
-                });
-            }
-            if (!mAlbumFolderSelectedDialog.isShowing())
-                mAlbumFolderSelectedDialog.show();
+            mAlbumFolderFragment = AlbumFolderDialogFragment.getInstance(mAlbumFolders, mToolBarColor, statusColor);
+            mAlbumFolderFragment.show(getFragmentManager(), null);
+
+//            if (mAlbumFolderSelectedDialog == null) {
+//                mAlbumFolderSelectedDialog = new AlbumFolderDialog(AlbumActivity.this, mToolBarColor, mAlbumFolders, new OnCompatItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//                        showAlbum(position);
+//                    }
+//                });
+//            }
+//            if (!mAlbumFolderSelectedDialog.isShowing())
+//                mAlbumFolderSelectedDialog.show();
+
+
         }
     };
 
@@ -442,7 +447,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         mBtnSwitchFolder.setText(albumFolder.getName());
         mToolbar.setTitle(albumFolder.getName());
         mAlbumContentAdapter.notifyDataSetChanged(albumFolder.getPhotos());
-        mGridLayoutManager.scrollToPosition(0);
+        mGridLayoutManager.scrollToPosition(albumFolder.getPhotos().size() - 1);
     }
 
     /**

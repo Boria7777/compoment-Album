@@ -121,7 +121,7 @@ public class AlbumImage implements Parcelable, Comparable<AlbumImage> {
 
     @Override
     public int compareTo(AlbumImage o) {
-        long time = o.getAddTime() - getAddTime();
+        long time = getAddTime() - o.getAddTime();
         if (time > Integer.MAX_VALUE)
             return Integer.MAX_VALUE;
         else if (time < -Integer.MAX_VALUE)

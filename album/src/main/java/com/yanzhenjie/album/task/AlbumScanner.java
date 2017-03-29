@@ -77,7 +77,7 @@ public class AlbumScanner {
      * @param context {@link Context}.
      * @return {@code List<AlbumFolder>}.
      */
-    public List<AlbumFolder> getPhotoAlbum(Context context) {
+    public ArrayList<AlbumFolder> getPhotoAlbum(Context context) {
         Cursor cursor = MediaStore.Images.Media.query(context.getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES);
         Map<String, AlbumFolder> albumFolderMap = new HashMap<>();
 
@@ -115,7 +115,7 @@ public class AlbumScanner {
             }
         }
         cursor.close();
-        List<AlbumFolder> albumFolders = new ArrayList<>();
+        ArrayList<AlbumFolder> albumFolders = new ArrayList<>();
 
         Collections.sort(allImageAlbumFolder.getPhotos());
         albumFolders.add(allImageAlbumFolder);
