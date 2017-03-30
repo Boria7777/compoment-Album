@@ -75,7 +75,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private Toolbar mToolbar;
     private TextView completeTxt;
     private TextView previewTxt;
+    private TextView sendTxt;
     private RelativeLayout completeLayout;
+    private RelativeLayout sendLayout;
     //    private Button mBtnPreview;
     private Button mBtnSwitchFolder;
     private RecyclerView mRvContentList;
@@ -123,9 +125,12 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      */
     private void initializeMain(int statusColor) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        completeTxt = (TextView) findViewById(R.id.complete);
+        completeTxt = (TextView) findViewById(R.id.activitycancel);
+        completeTxt.setOnClickListener(this);
         previewTxt = (TextView) findViewById(R.id.previewtextview);
+        sendTxt = (TextView) findViewById(R.id.sendtext);
         completeLayout = (RelativeLayout) findViewById(R.id.complete_layout);
+        sendLayout = (RelativeLayout) findViewById(R.id.sendLayout);
 //        mBtnPreview = (Button) findViewById(R.id.btn_preview);
         mBtnSwitchFolder = (Button) findViewById(R.id.btn_switch_dir);
         mRvContentList = (RecyclerView) findViewById(R.id.rv_content_list);
@@ -134,7 +139,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         previewTxt.setOnClickListener(mPreviewClick);
-        mBtnSwitchFolder.setOnClickListener(mSwitchDirClick);
+//        mBtnSwitchFolder.setOnClickListener(mSwitchDirClick);
 
         setStatusBarColor(statusColor);
         mToolbar.setBackgroundColor(mToolBarColor);
@@ -156,7 +161,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      */
     private void initializeContent(int normalColor) {
         mRvContentList.setHasFixedSize(true);
-        mGridLayoutManager = new GridLayoutManager(this, 3);
+        mGridLayoutManager = new GridLayoutManager(this, 4);
         mRvContentList.setLayoutManager(mGridLayoutManager);
         mRvContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -365,15 +370,12 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     public void setPreviewCount(int count) {
         if (count == 0) {
             previewTxt.setText("预览");
-            completeTxt.setText("完成");
-            completeLayout.setBackgroundResource(R.drawable.album_btn_unpressed);
+            findViewById(R.id.sendNum).setVisibility(View.INVISIBLE);
         } else if (count > 0) {
             previewTxt.setText("预览" + " (" + count + ")");
-            completeTxt.setText("完成" + "(" + count + "/" + mAllowSelectCount + ")");
-            completeLayout.setBackgroundResource(R.drawable.album_btn_pressed);
+            sendTxt.setText("" + count + "");
+            findViewById(R.id.sendNum).setVisibility(View.VISIBLE);
         }
-
-//        mToolbar.setSubtitle(count + "/" + mAllowSelectCount);
     }
 
     /**
@@ -382,21 +384,16 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private View.OnClickListener mSwitchDirClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mAlbumFolderFragment = AlbumFolderDialogFragment.getInstance(mAlbumFolders, mToolBarColor, statusColor);
+            if (mAlbumFolderFragment == null) {
+                mAlbumFolderFragment = AlbumFolderDialogFragment.getInstance(mAlbumFolders, mToolBarColor, statusColor);
+                mAlbumFolderFragment.setItemclickListener(new OnCompatItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        showAlbum(position);
+                    }
+                });
+            }
             mAlbumFolderFragment.show(getFragmentManager(), null);
-
-//            if (mAlbumFolderSelectedDialog == null) {
-//                mAlbumFolderSelectedDialog = new AlbumFolderDialog(AlbumActivity.this, mToolBarColor, mAlbumFolders, new OnCompatItemClickListener() {
-//                    @Override
-//                    public void onItemClick(View view, int position) {
-//                        showAlbum(position);
-//                    }
-//                });
-//            }
-//            if (!mAlbumFolderSelectedDialog.isShowing())
-//                mAlbumFolderSelectedDialog.show();
-
-
         }
     };
 
@@ -496,17 +493,21 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         return mAllowSelectCount;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_activity_album, menu);
-//        return false;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
-            toResult(true);
+            if (mAlbumFolderFragment == null) {
+                mAlbumFolderFragment = AlbumFolderDialogFragment.getInstance(mAlbumFolders, mToolBarColor, statusColor);
+                mAlbumFolderFragment.setItemclickListener(new OnCompatItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        showAlbum(position);
+                    }
+                });
+            }
+            mAlbumFolderFragment.show(getFragmentManager(), null);
         } else if (itemId == R.id.menu_gallery_finish) {
             toResult(false);
         }
@@ -568,8 +569,10 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.complete) {
+        if (id == R.id.sendLayout) {
             toResult(false);
+        } else if (id == R.id.activitycancel) {
+            toResult(true);
         }
     }
 }

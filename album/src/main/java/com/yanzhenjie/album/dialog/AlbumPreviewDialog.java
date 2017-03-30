@@ -8,7 +8,6 @@
  */
 package com.yanzhenjie.album.dialog;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDialog;
@@ -19,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.yanzhenjie.album.AlbumActivity;
 import com.yanzhenjie.album.R;
@@ -26,8 +27,9 @@ import com.yanzhenjie.album.adapter.PreviewAdapter;
 import com.yanzhenjie.album.entity.AlbumImage;
 import com.yanzhenjie.album.impl.OnCompatCompoundCheckListener;
 import com.yanzhenjie.album.task.Poster;
-import com.yanzhenjie.album.util.SelectorUtils;
 
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
 
 
@@ -40,8 +42,10 @@ public class AlbumPreviewDialog extends AppCompatDialog {
     private AlbumActivity mAlbumActivity;
 
     private Toolbar mToolbar;
-    private MenuItem mFinishMenuItem;
-
+    //    private MenuItem mFinishMenuItem;
+    private TextView sendtext;
+    private TextView sizeTxt;
+    private RelativeLayout sendLayout;
     private AppCompatCheckBox mCheckBox;
     private OnCompatCompoundCheckListener mCheckListener;
     private int mCheckedImagePosition;
@@ -61,9 +65,17 @@ public class AlbumPreviewDialog extends AppCompatDialog {
         this.mAlbumImages = albumImages;
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mCheckBox = (AppCompatCheckBox) findViewById(R.id.cb_album_check);
+        mCheckBox = (AppCompatCheckBox) findViewById(R.id.select);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
-
+        sendtext = (TextView) findViewById(R.id.sendtext);
+        sizeTxt = (TextView) findViewById(R.id.imagesize);
+        sendLayout = (RelativeLayout) findViewById(R.id.sendLayout);
+        sendLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlbumActivity.toResult(false);
+            }
+        });
         initializeToolbar(toolbarColor);
         initializeCheckBox(toolbarColor);
         initializeViewPager(clickItemPosition, contentHeight);
@@ -73,9 +85,6 @@ public class AlbumPreviewDialog extends AppCompatDialog {
     private void initializeToolbar(int toolbarColor) {
         mToolbar.setBackgroundColor(toolbarColor);
         mToolbar.getBackground().mutate().setAlpha(200);
-
-        mToolbar.inflateMenu(R.menu.menu_dialog_album);
-        mFinishMenuItem = mToolbar.getMenu().findItem(R.id.menu_gallery_finish);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -101,7 +110,7 @@ public class AlbumPreviewDialog extends AppCompatDialog {
     }
 
     private void initializeCheckBox(int checkColor) {
-        mCheckBox.setSupportButtonTintList(SelectorUtils.createColorStateList(Color.WHITE, checkColor));
+//        mCheckBox.setSupportButtonTintList(SelectorUtils.createColorStateList(Color.WHITE, checkColor));
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -115,7 +124,7 @@ public class AlbumPreviewDialog extends AppCompatDialog {
         if (mAlbumImages.size() > 2)
             mViewPager.setOffscreenPageLimit(2);
 
-        PreviewAdapter previewAdapter = new PreviewAdapter(mAlbumImages, contentHeight,mAlbumActivity);
+        PreviewAdapter previewAdapter = new PreviewAdapter(mAlbumImages, contentHeight, mAlbumActivity);
         mViewPager.setAdapter(previewAdapter);
         ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -123,6 +132,7 @@ public class AlbumPreviewDialog extends AppCompatDialog {
                 mCheckedImagePosition = position;
                 AlbumImage albumImage = mAlbumImages.get(mCheckedImagePosition);
                 mCheckBox.setChecked(albumImage.isChecked());
+                sizeTxt.setText( getFileSize(albumImage.getPath()));
                 mToolbar.setTitle(mCheckedImagePosition + 1 + " / " + mAlbumImages.size());
             }
         };
@@ -137,13 +147,56 @@ public class AlbumPreviewDialog extends AppCompatDialog {
         getWindow().setLayout(-1, -2);
     }
 
+    public static String getFileSize(String path) {
+        String sizekb = null;
+        float sizefloat = 0;
+        //传入文件路径
+        File file = new File(path);
+        //测试此文件是否存在
+        if (file.exists()) {
+            //如果是文件夹
+            //这里只检测了文件夹中第一层 如果有需要 可以继续递归检测
+            if (file.isDirectory()) {
+                int size = 0;
+                for (File zf : file.listFiles()) {
+                    if (zf.isDirectory()) continue;
+                    size += zf.length();
+                }
+                sizefloat = (size / 1024f);
+            } else {
+                sizefloat = (file.length() / 1024f);
+
+            }
+            //如果文件不存在
+        } else {
+
+        }
+        if (sizefloat > 1024f) {
+            sizefloat = (sizefloat / 1024f);
+            DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+            sizekb = decimalFormat.format(sizefloat) + "MB";
+        } else if (sizefloat == 0) {
+            sizekb = "";
+        } else {
+            DecimalFormat decimalFormat = new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+            sizekb = decimalFormat.format(sizefloat) + "KB";
+        }
+        return sizekb;
+    }
+
     /**
      * 设置Menu的选中文字。
      */
     private void setMenuItemTitle() {
         String finishStr = mAlbumActivity.getString(R.string.album_menu_finish);
         finishStr += "(" + mAlbumActivity.getCheckedImagesSize() + " / " + mAlbumActivity.getAllowCheckCount() + ")";
-        mFinishMenuItem.setTitle(finishStr);
+//        mFinishMenuItem.setTitle(finishStr);
+        if (mAlbumActivity.getCheckedImagesSize() > 0) {
+            sendtext.setText("" + mAlbumActivity.getCheckedImagesSize() + "");
+            findViewById(R.id.sendNum).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.sendNum).setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -2,12 +2,15 @@
 <resources>
 
     <color name="albumWhite">#FFFFFFFF</color>
+    <color name="colorWhite">#F6F6F6</color>
     <color name="albumWhiteGray">#E0E0E0</color>
     <color name="albumTransparent">#00000000</color>
     <color name="albumColorPrimary">#2196F3</color>
     <color name="albumColorPrimaryDark">#1E88E5</color>
     <color name="albumSheetBackground">#CC2B2B2B</color>
     <color name="albumTransparentHalf">#20000000</color>
+    <color name="colorblack">#31343b</color>
+    <color name="color5da8de">#5da8de</color>
     <color name="albumPrimaryBlack">#FF2B2B2B</color>
     <color name="colorblue">#0192ff</color>
     <color name="colorPrimary">#FF5722</color>

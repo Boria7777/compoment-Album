@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import com.yanzhenjie.album.R;
 import com.yanzhenjie.album.adapter.DialogFolderAdapter;
 import com.yanzhenjie.album.entity.AlbumFolder;
 import com.yanzhenjie.album.impl.OnCompatItemClickListener;
+import com.yanzhenjie.album.task.Poster;
 import com.yanzhenjie.album.util.SelectorUtils;
 
 import java.util.ArrayList;
@@ -40,9 +42,14 @@ import java.util.ArrayList;
 public class AlbumFolderDialogFragment extends DialogFragment {
     private RecyclerView rvContentList;
     private ArrayList<AlbumFolder> albumFolders;
+    private RelativeLayout cancel_layout;
     private int mToolBarColor;
     private int statusColor;
     private Toolbar mToolbar;
+    private OnCompatItemClickListener mItemClickListener;
+    private boolean isOpen = true;
+    private int checkPosition = 0;
+    private DialogFolderAdapter dialogFolderAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,10 @@ public class AlbumFolderDialogFragment extends DialogFragment {
         albumFolders = getArguments().getParcelableArrayList("albumFolders");
         mToolBarColor = getArguments().getInt("mToolBarColor");
         statusColor = getArguments().getInt("statusColor");
+    }
+
+    public void setItemclickListener(OnCompatItemClickListener listener) {
+        this.mItemClickListener = listener;
     }
 
     public static AlbumFolderDialogFragment getInstance(ArrayList<AlbumFolder> albumFolders, int mToolBarColor, int statusColor) {
@@ -70,31 +81,59 @@ public class AlbumFolderDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.album_folder_dialog, container, false);
 
         mToolbar = (Toolbar) view.findViewById(R.id.dialogtoolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+        cancel_layout = (RelativeLayout) view.findViewById(R.id.cancel_layout);
+        cancel_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
         mToolbar.setBackgroundColor(mToolBarColor);
         setStatusBarColor(statusColor);
         rvContentList = (RecyclerView) view.findViewById(R.id.content_list);
         rvContentList.setHasFixedSize(true);
         rvContentList.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvContentList.setAdapter(new DialogFolderAdapter(SelectorUtils.createColorStateList(ContextCompat.getColor(getContext(), R.color.albumPrimaryBlack), mToolBarColor), albumFolders, new OnCompatItemClickListener() {
-            @Override
-            public void onItemClick(final View view, final int position) {
-//                if (isOpen) { // 反应太快，按钮点击效果出不来，故加延迟。
-//                    isOpen = false;
-//                    Poster.getInstance().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            behaviorHide();
-//                            if (mItemClickListener != null && checkPosition != position) {
-//                                checkPosition = position;
-//                                mItemClickListener.onItemClick(view, position);
-//                            }
-//                            isOpen = true;
-//                        }
-//                    }, 200);
-//                }
-            }
-        }));
+        if (dialogFolderAdapter == null) {
+            dialogFolderAdapter = new DialogFolderAdapter(SelectorUtils.createColorStateList(ContextCompat.getColor(getContext(), R.color.albumPrimaryBlack), mToolBarColor), albumFolders, new OnCompatItemClickListener() {
+                @Override
+                public void onItemClick(final View view, final int position) {
+                    if (isOpen) { // 反应太快，按钮点击效果出不来，故加延迟。
+                        isOpen = false;
+                        Poster.getInstance().post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (mItemClickListener != null && checkPosition != position) {
+                                    checkPosition = position;
+                                    mItemClickListener.onItemClick(view, position);
+                                }
+                                isOpen = true;
+                            }
+                        });
+                        Poster.getInstance().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                behaviorHide();
+                            }
+                        }, 400);
+                    }
+                }
+            });
+        }
+        rvContentList.setAdapter(dialogFolderAdapter);
+
         return view;
+    }
+
+
+    public void behaviorHide() {
+        this.dismiss();
     }
 
     private void setStatusBarColor(@ColorInt int color) {

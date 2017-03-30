@@ -51,7 +51,7 @@ public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private OnCompatCompoundCheckListener mOnCompatCheckListener;
 
-    private static int size = (DisplayUtils.screenWidth - 6) / 3;
+    private static int size = (DisplayUtils.screenWidth - 6) / 4;
 
     public AlbumContentAdapter(int normalColor, int checkColor) {
         this.mColorStateList = SelectorUtils.createColorStateList(normalColor, checkColor);
@@ -154,7 +154,7 @@ public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         public void setButtonTint(ColorStateList colorStateList) {
-            mCompatCheckBox.setSupportButtonTintList(colorStateList);
+//            mCompatCheckBox.setSupportButtonTintList(colorStateList);
         }
 
         public void setData(AlbumImage albumImage) {

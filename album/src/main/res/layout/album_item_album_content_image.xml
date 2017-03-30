@@ -13,6 +13,9 @@
         android:id="@+id/cb_album_check"
         style="@style/AlbumCheckBox.WrapContent"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:button="@drawable/checkbox_item" />
 
 </RelativeLayout>

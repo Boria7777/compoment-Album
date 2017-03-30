@@ -17,22 +17,23 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/album_dp_50"
+        android:layout_height="@dimen/album_dp_42"
         android:layout_gravity="bottom"
-        android:background="@color/albumSheetBackground">
+        android:background="@color/colorWhite">
 
         <Button
             android:id="@+id/btn_switch_dir"
             style="@style/AlbumButtonText"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:drawableEnd="@drawable/album_abc_spinner_white"
             android:drawableRight="@drawable/album_abc_spinner_white"
             android:ellipsize="end"
             android:maxLines="1"
             android:maxWidth="@dimen/album_dp_200"
             android:textColor="@color/albumWhite"
-            android:textSize="@dimen/album_sp_16" />
+            android:textSize="@dimen/album_sp_16"
+            android:visibility="gone" />
 
 
         <Button
@@ -54,11 +55,49 @@
             style="@style/AlbumButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="预览"
+            android:textColor="@color/colorblack"
+            android:textSize="15sp" />
+
+        <RelativeLayout
+            android:id="@+id/sendLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:text="预览"
-            android:textColor="@color/colorblue"
-            android:textSize="16sp" />
+            android:onClick="onClick">
+
+            <RelativeLayout
+                android:id="@+id/sendNum"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/bj29"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/sendtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorWhite" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/sendNum"
+                android:text="发送"
+                android:textColor="@color/color5da8de"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
