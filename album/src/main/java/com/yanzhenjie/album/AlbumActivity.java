@@ -73,12 +73,15 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private static ExecutorService sRunnableExecutor = Executors.newSingleThreadExecutor();
 
     private Toolbar mToolbar;
-    private TextView completeTxt;
+    private TextView ioscancelTxt;
+    private TextView andcompleteTxt;
+    private TextView androidpreviewTxt;
     private TextView previewTxt;
     private TextView sendTxt;
-    private RelativeLayout completeLayout;
+    private RelativeLayout ioscompleteLayout;
+    private RelativeLayout andcompleteLayout;
     private RelativeLayout sendLayout;
-    //    private Button mBtnPreview;
+
     private Button mBtnSwitchFolder;
     private RecyclerView mRvContentList;
     private GridLayoutManager mGridLayoutManager;
@@ -123,10 +126,14 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         scanImages();
         if (showType == Album.IOSTYPE) {
             findViewById(R.id.iosbottom).setVisibility(View.VISIBLE);
+            findViewById(R.id.ioscomplete_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.androidbottom).setVisibility(View.GONE);
+            findViewById(R.id.andcomplete_layout).setVisibility(View.GONE);
         } else if (showType == Album.ANDROIDTYPE) {
             findViewById(R.id.iosbottom).setVisibility(View.GONE);
+            findViewById(R.id.ioscomplete_layout).setVisibility(View.GONE);
             findViewById(R.id.androidbottom).setVisibility(View.VISIBLE);
+            findViewById(R.id.andcomplete_layout).setVisibility(View.VISIBLE);
         }
     }
 
@@ -135,20 +142,28 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      */
     private void initializeMain(int statusColor) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        completeTxt = (TextView) findViewById(R.id.activitycancel);
-        completeTxt.setOnClickListener(this);
+        ioscancelTxt = (TextView) findViewById(R.id.activitycancel);
+        ioscancelTxt.setOnClickListener(this);
+        andcompleteTxt = (TextView) findViewById(R.id.andcomplete);
         previewTxt = (TextView) findViewById(R.id.previewtextview);
         sendTxt = (TextView) findViewById(R.id.sendtext);
-        completeLayout = (RelativeLayout) findViewById(R.id.complete_layout);
+        ioscompleteLayout = (RelativeLayout) findViewById(R.id.ioscomplete_layout);
+        andcompleteLayout = (RelativeLayout) findViewById(R.id.andcomplete_layout);
+        andcompleteLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toResult(false);
+            }
+        });
         sendLayout = (RelativeLayout) findViewById(R.id.sendLayout);
-//        mBtnPreview = (Button) findViewById(R.id.btn_preview);
+        androidpreviewTxt = (TextView) findViewById(R.id.androidpreview);
         mBtnSwitchFolder = (Button) findViewById(R.id.btn_switch_dir);
         mRvContentList = (RecyclerView) findViewById(R.id.rv_content_list);
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         previewTxt.setOnClickListener(mPreviewClick);
+        androidpreviewTxt.setOnClickListener(mPreviewClick);
         mBtnSwitchFolder.setOnClickListener(androidSwitchDirClick);
 
         setStatusBarColor(statusColor);
@@ -378,13 +393,26 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      * @param count 数字。
      */
     public void setPreviewCount(int count) {
-        if (count == 0) {
-            previewTxt.setText("预览");
-            findViewById(R.id.sendNum).setVisibility(View.INVISIBLE);
-        } else if (count > 0) {
-            previewTxt.setText("预览" + " (" + count + ")");
-            sendTxt.setText("" + count + "");
-            findViewById(R.id.sendNum).setVisibility(View.VISIBLE);
+        if (showType==Album.IOSTYPE){
+            if (count == 0) {
+                previewTxt.setText("预览");
+                findViewById(R.id.sendNum).setVisibility(View.INVISIBLE);
+            } else if (count > 0) {
+                previewTxt.setText("预览" + " (" + count + ")");
+                androidpreviewTxt.setText("预览" + " (" + count + ")");
+                sendTxt.setText("" + count + "");
+                findViewById(R.id.sendNum).setVisibility(View.VISIBLE);
+            }
+        }else if (showType==Album.ANDROIDTYPE){
+            if (count == 0) {
+                androidpreviewTxt.setText("预览");
+                andcompleteTxt.setText("完成");
+                andcompleteLayout.setBackgroundResource(R.drawable.album_btn_unpressed);
+            } else if (count > 0) {
+                androidpreviewTxt.setText("预览" + " (" + count + ")");
+                andcompleteTxt.setText("完成" + "(" + count + "/" + mAllowSelectCount + ")");
+                andcompleteLayout.setBackgroundResource(R.drawable.album_btn_pressed);
+            }
         }
     }
 

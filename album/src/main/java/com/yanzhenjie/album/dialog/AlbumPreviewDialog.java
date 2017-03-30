@@ -47,24 +47,26 @@ public class AlbumPreviewDialog extends AppCompatDialog {
     private TextView sizeTxt;
     private RelativeLayout sendLayout;
     private AppCompatCheckBox mCheckBox;
+    private AppCompatCheckBox andCheckBox;
     private OnCompatCompoundCheckListener mCheckListener;
     private int mCheckedImagePosition;
-
+    private int showType;
     private ViewPager mViewPager;
     private List<AlbumImage> mAlbumImages;
 
     private boolean isOpen = true;
 
-    public AlbumPreviewDialog(AlbumActivity albumActivity, int toolbarColor, List<AlbumImage> albumImages, OnCompatCompoundCheckListener checkListener, int clickItemPosition, int contentHeight) {
+    public AlbumPreviewDialog(AlbumActivity albumActivity, int toolbarColor, List<AlbumImage> albumImages, OnCompatCompoundCheckListener checkListener, int clickItemPosition, int contentHeight, int showType) {
         super(albumActivity, R.style.AlbumDialogStyle_Preview);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.album_dialog_album_preview);
-
+        this.showType = showType;
         this.mAlbumActivity = albumActivity;
         this.mCheckListener = checkListener;
         this.mAlbumImages = albumImages;
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        andCheckBox = (AppCompatCheckBox) findViewById(R.id.cb_album_check);
         mCheckBox = (AppCompatCheckBox) findViewById(R.id.select);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         sendtext = (TextView) findViewById(R.id.sendtext);
@@ -118,6 +120,14 @@ public class AlbumPreviewDialog extends AppCompatDialog {
                 setMenuItemTitle();
             }
         });
+
+        andCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mCheckListener.onCheck(buttonView, mCheckedImagePosition, isChecked);
+                setMenuItemTitle();
+            }
+        });
     }
 
     private void initializeViewPager(int currentItem, int contentHeight) {
@@ -132,7 +142,7 @@ public class AlbumPreviewDialog extends AppCompatDialog {
                 mCheckedImagePosition = position;
                 AlbumImage albumImage = mAlbumImages.get(mCheckedImagePosition);
                 mCheckBox.setChecked(albumImage.isChecked());
-                sizeTxt.setText( getFileSize(albumImage.getPath()));
+                sizeTxt.setText(getFileSize(albumImage.getPath()));
                 mToolbar.setTitle(mCheckedImagePosition + 1 + " / " + mAlbumImages.size());
             }
         };
