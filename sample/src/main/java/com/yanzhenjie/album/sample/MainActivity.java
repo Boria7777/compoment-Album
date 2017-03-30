@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,7 +20,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
-    private Context ctx =this;
+    private Context ctx = this;
 
     private View noneView;
 
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private void selectImage() {
         // 1. 使用默认风格，并指定选择数量：
         // 第一个参数Activity/Fragment； 第二个request_code； 第三个允许选择照片的数量，不填可以无限选择。
-         Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO, 9);
+        Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO, 9, 3, Album.ANDROIDTYPE);
 
         // 2. 使用默认风格，不指定选择数量：
         // Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO); // 第三个参数不填的话，可以选择无数个。

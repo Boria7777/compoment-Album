@@ -31,9 +31,14 @@ import java.util.List;
 public class Album {
 
     public static String KEY_INPUT_LIMIT_COUNT = "KEY_INPUT_LIMIT_COUNT";
+    public static String KEY_INPUT_SHOW_TYPE = "KEY_INPUT_SHOW_TYPE";
+    public static String KEY_INPUT_ITEM_SIZE = "KEY_INPUT_ITEM_SIZE";
     public static String KEY_INPUT_TOOLBAR_COLOR = "KEY_INPUT_TOOLBAR_COLOR";
     public static String KEY_INPUT_STATUS_COLOR = "KEY_INPUT_STATUS_COLOR";
     public static String KEY_OUTPUT_IMAGE_PATH_LIST = "KEY_OUTPUT_IMAGE_PATH_LIST";
+    public static int IOSTYPE = 1;
+    public static int ANDROIDTYPE = 2;
+    public static int ITEMSIZE = 4;
 
     /**
      * @param activity    接受文件的Activity。
@@ -56,17 +61,49 @@ public class Album {
     }
 
     /**
+     * @param activity    接受文件的Activity。
+     * @param requestCode 请求码。
+     * @param limitCount  最多能选择多少图片。
+     * @param itemSize    每行item数量。
+     */
+    public static void startAlbum(Activity activity, int requestCode, int limitCount, int itemSize) {
+        Intent intent = new Intent(activity, AlbumActivity.class);
+        intent.putExtra(KEY_INPUT_LIMIT_COUNT, limitCount);
+        intent.putExtra(KEY_INPUT_ITEM_SIZE, itemSize);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * @param activity    接受文件的Activity。
+     * @param requestCode 请求码。
+     * @param limitCount  最多能选择多少图片。
+     * @param itemSize    每行item数量。
+     * @param showType    显示模式 ios或者android。
+     */
+    public static void startAlbum(Activity activity, int requestCode, int limitCount, int itemSize, int showType) {
+        Intent intent = new Intent(activity, AlbumActivity.class);
+        intent.putExtra(KEY_INPUT_LIMIT_COUNT, limitCount);
+        intent.putExtra(KEY_INPUT_ITEM_SIZE, itemSize);
+        intent.putExtra(KEY_INPUT_SHOW_TYPE, showType);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
      * @param activity       接受文件的Activity。
      * @param requestCode    请求码。
      * @param limitCount     最多能选择多少图片。
      * @param toolbarColor   Toolbar 颜色。
      * @param statusBarColor 状态栏颜色。
+     * @param itemSize       每行item数量。
+     * @param showType       显示模式 ios或者android。
      */
-    public static void startAlbum(Activity activity, int requestCode, int limitCount, @ColorInt int toolbarColor, @ColorInt int statusBarColor) {
+    public static void startAlbum(Activity activity, int requestCode, int limitCount, @ColorInt int toolbarColor, @ColorInt int statusBarColor, int itemSize, int showType) {
         Intent intent = new Intent(activity, AlbumActivity.class);
         intent.putExtra(KEY_INPUT_LIMIT_COUNT, limitCount);
         intent.putExtra(KEY_INPUT_TOOLBAR_COLOR, toolbarColor);
         intent.putExtra(KEY_INPUT_STATUS_COLOR, statusBarColor);
+        intent.putExtra(KEY_INPUT_ITEM_SIZE, itemSize);
+        intent.putExtra(KEY_INPUT_SHOW_TYPE, showType);
         activity.startActivityForResult(intent, requestCode);
     }
 

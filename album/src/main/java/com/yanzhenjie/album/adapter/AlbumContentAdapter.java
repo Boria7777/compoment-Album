@@ -51,10 +51,12 @@ public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private OnCompatCompoundCheckListener mOnCompatCheckListener;
 
-    private static int size = (DisplayUtils.screenWidth - 6) / 4;
+    private static int size = (DisplayUtils.screenWidth - 6);
+    private static int itemsize = 4;
 
-    public AlbumContentAdapter(int normalColor, int checkColor) {
+    public AlbumContentAdapter(int normalColor, int checkColor, int itemsize) {
         this.mColorStateList = SelectorUtils.createColorStateList(normalColor, checkColor);
+        this.itemsize = itemsize;
     }
 
     private void initLayoutInflater(Context context) {
@@ -144,8 +146,8 @@ public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public GalleryContentImageHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            itemView.getLayoutParams().width = size;
-            itemView.getLayoutParams().height = size;
+            itemView.getLayoutParams().width = size/itemsize;
+            itemView.getLayoutParams().height = size/itemsize;
             itemView.requestLayout();
 
             mIvImage = (ImageView) itemView.findViewById(R.id.iv_album_content_image);
@@ -158,10 +160,10 @@ public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         public void setData(AlbumImage albumImage) {
-                Glide.with(ctx.getApplicationContext())
-                        .load(albumImage.getPath())
-                        .override(size, size)
-                        .into(mIvImage);
+            Glide.with(ctx.getApplicationContext())
+                    .load(albumImage.getPath())
+                    .override(size/itemsize, size/itemsize)
+                    .into(mIvImage);
             mCompatCheckBox.setChecked(albumImage.isChecked());
         }
 
@@ -193,8 +195,8 @@ public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public GalleryContentButtonHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            itemView.getLayoutParams().width = size;
-            itemView.getLayoutParams().height = size;
+            itemView.getLayoutParams().width = size/itemsize;
+            itemView.getLayoutParams().height = size/itemsize;
             itemView.requestLayout();
         }
 

@@ -16,39 +16,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <RelativeLayout
+        android:id="@+id/iosbottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/album_dp_42"
         android:layout_gravity="bottom"
+        android:visibility="invisible"
         android:background="@color/colorWhite">
-
-        <Button
-            android:id="@+id/btn_switch_dir"
-            style="@style/AlbumButtonText"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:drawableEnd="@drawable/album_abc_spinner_white"
-            android:drawableRight="@drawable/album_abc_spinner_white"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:maxWidth="@dimen/album_dp_200"
-            android:textColor="@color/albumWhite"
-            android:textSize="@dimen/album_sp_16"
-            android:visibility="gone" />
-
-
-        <Button
-            android:id="@+id/btn_preview"
-            style="@style/AlbumButtonText"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:drawableLeft="@drawable/album_ic_eye_white"
-            android:drawableStart="@drawable/album_ic_eye_white"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:maxWidth="@dimen/album_dp_200"
-            android:textColor="@color/albumWhite"
-            android:textSize="@dimen/album_sp_16"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/previewtextview"
@@ -98,6 +71,40 @@
                 android:textSize="15sp" />
 
         </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/androidbottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/album_dp_50"
+        android:layout_gravity="bottom"
+        android:background="@color/albumSheetBackground">
+
+        <Button
+            android:id="@+id/btn_switch_dir"
+            style="@style/AlbumButtonText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:drawableEnd="@drawable/album_abc_spinner_white"
+            android:drawableRight="@drawable/album_abc_spinner_white"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:maxWidth="@dimen/album_dp_200"
+            android:textColor="@color/albumWhite"
+            android:textSize="@dimen/album_sp_16" />
+
+
+        <TextView
+            android:id="@+id/androidpreview"
+            style="@style/AlbumButtonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="预览"
+            android:textColor="@color/colorblue"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

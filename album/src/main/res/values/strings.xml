@@ -13,4 +13,6 @@
     <string name="album_permission_storage_failed_hint">获取读取相册权限失败，请在设置中授权后再使用。</string>
     <string name="album_permission_camera_failed_hint">获取相机权限失败，请在设置中授权后再使用。</string>
     <string name="album_dialog_sure">好的</string>
+    <integer name="IosType">1</integer>
+    <integer name="AndroidType">2</integer>
 </resources>

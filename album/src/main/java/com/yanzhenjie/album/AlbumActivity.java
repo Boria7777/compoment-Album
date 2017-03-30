@@ -88,7 +88,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     private int statusColor;
     private int mAllowSelectCount;
     private int mCheckFolderIndex;
-
+    private int showType;
+    private int itemssize;
     private ArrayList<AlbumFolder> mAlbumFolders;
     private ArrayList<AlbumImage> mCheckedImages = new ArrayList<>(1);
     private ArrayList<AlbumImage> mTempCheckedImages;
@@ -112,12 +113,21 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         mToolBarColor = intent.getIntExtra(Album.KEY_INPUT_TOOLBAR_COLOR, ResourcesCompat.getColor(getResources(), R.color.albumColorPrimary, null));
         statusColor = intent.getIntExtra(Album.KEY_INPUT_STATUS_COLOR, ResourcesCompat.getColor(getResources(), R.color.albumColorPrimaryDark, null));
         mAllowSelectCount = intent.getIntExtra(Album.KEY_INPUT_LIMIT_COUNT, Integer.MAX_VALUE);
+        showType = intent.getIntExtra(Album.KEY_INPUT_SHOW_TYPE, Album.IOSTYPE);
+        itemssize = intent.getIntExtra(Album.KEY_INPUT_ITEM_SIZE, Album.ITEMSIZE);
         int normalColor = ContextCompat.getColor(this, R.color.albumWhiteGray);
 
         initializeMain(statusColor);
         initializeContent(normalColor);
         setPreviewCount(0);
         scanImages();
+        if (showType == Album.IOSTYPE) {
+            findViewById(R.id.iosbottom).setVisibility(View.VISIBLE);
+            findViewById(R.id.androidbottom).setVisibility(View.GONE);
+        } else if (showType == Album.ANDROIDTYPE) {
+            findViewById(R.id.iosbottom).setVisibility(View.GONE);
+            findViewById(R.id.androidbottom).setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -139,7 +149,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         previewTxt.setOnClickListener(mPreviewClick);
-//        mBtnSwitchFolder.setOnClickListener(mSwitchDirClick);
+        mBtnSwitchFolder.setOnClickListener(androidSwitchDirClick);
 
         setStatusBarColor(statusColor);
         mToolbar.setBackgroundColor(mToolBarColor);
@@ -161,7 +171,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
      */
     private void initializeContent(int normalColor) {
         mRvContentList.setHasFixedSize(true);
-        mGridLayoutManager = new GridLayoutManager(this, 4);
+        mGridLayoutManager = new GridLayoutManager(this, itemssize);
         mRvContentList.setLayoutManager(mGridLayoutManager);
         mRvContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -174,7 +184,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        mAlbumContentAdapter = new AlbumContentAdapter(normalColor, mToolBarColor);
+        mAlbumContentAdapter = new AlbumContentAdapter(normalColor, mToolBarColor, itemssize);
         mAlbumContentAdapter.setAddPhotoClickListener(mAddPhotoListener);
         mAlbumContentAdapter.setItemClickListener(new OnCompatItemClickListener() {
             @Override
@@ -398,6 +408,26 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     };
 
     /**
+     * 切换文件夹按钮被点击。
+     */
+    private View.OnClickListener androidSwitchDirClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mAlbumFolderSelectedDialog == null) {
+                mAlbumFolderSelectedDialog = new AlbumFolderDialog(AlbumActivity.this, mToolBarColor, mAlbumFolders, new OnCompatItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        showAlbum(position);
+                    }
+                });
+            }
+            if (!mAlbumFolderSelectedDialog.isShowing())
+                mAlbumFolderSelectedDialog.show();
+        }
+    };
+
+
+    /**
      * 预览按钮被点击。
      */
     private View.OnClickListener mPreviewClick = new View.OnClickListener() {
@@ -498,16 +528,22 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
-            if (mAlbumFolderFragment == null) {
-                mAlbumFolderFragment = AlbumFolderDialogFragment.getInstance(mAlbumFolders, mToolBarColor, statusColor);
-                mAlbumFolderFragment.setItemclickListener(new OnCompatItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        showAlbum(position);
-                    }
-                });
+            if (showType == Album.IOSTYPE) {
+
+                if (mAlbumFolderFragment == null) {
+                    mAlbumFolderFragment = AlbumFolderDialogFragment.getInstance(mAlbumFolders, mToolBarColor, statusColor);
+                    mAlbumFolderFragment.setItemclickListener(new OnCompatItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            showAlbum(position);
+                        }
+                    });
+                }
+                mAlbumFolderFragment.show(getFragmentManager(), null);
+            } else if (showType == Album.ANDROIDTYPE) {
+                toResult(true);
             }
-            mAlbumFolderFragment.show(getFragmentManager(), null);
+
         } else if (itemId == R.id.menu_gallery_finish) {
             toResult(false);
         }
