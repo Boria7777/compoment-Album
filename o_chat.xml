@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" ?>
+<project name="android" default="doit">
+
+    <property file="build.properties" />
+
+    <echo>
+        todo:chang vwt to ole beginning
+    </echo>
+
+    <property name="base.dir" value="." />
+    <property name="myself" value="o_chat.xml" />
+
+    <!--将所有文件中的com.roya.vwechat换成com.roya.ochat-->
+    <target name="change-1">
+        <replace dir="." encoding="UTF-8">
+            <include name="**/*.*" />
+            <exclude name="${myself}" />
+            <exclude name=".svn/*.*" />
+            <exclude name="VWTProtocol.java" />
+            <replacefilter token="com.yanzhenjie.album" value="com.royasoft.component.album" />
+        </replace>
+    </target>
+
+    <target name='doit'>
+        <antcall target="change-1" />
+        <echo>
+            chang com.roya.ochat to com.roy.ochat is ok!
+        </echo>  
+
+    </target>
+
+</project>

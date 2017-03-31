@@ -13,7 +13,7 @@
         app:navigationIcon="@drawable/system_back">
 
         <RelativeLayout
-            android:id="@+id/cancel_layout"
+            android:id="@+id/ios_top_layout"
             android:layout_width="wrap_content"
             android:layout_height="29dp"
             android:layout_gravity="right"

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yanzhenjie.album.sample;
+package com.royasoft.component.album.sample;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

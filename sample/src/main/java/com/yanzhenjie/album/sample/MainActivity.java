@@ -1,4 +1,4 @@
-package com.yanzhenjie.album.sample;
+package com.royasoft.component.album.sample;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.yanzhenjie.album.Album;
+import com.royasoft.component.album.Album;
+import com.royasoft.component.album.util.DisplayUtils;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private View noneView;
 
     private RecyclerView mRecyclerView;
-    private GridAdapter mGridAdapter;
+    private com.royasoft.component.album.sample.GridAdapter mGridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mGridAdapter = new GridAdapter(ctx);
+        mGridAdapter = new com.royasoft.component.album.sample.GridAdapter(ctx);
         mRecyclerView.setAdapter(mGridAdapter);
     }
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private void selectImage() {
         // 1. 使用默认风格，并指定选择数量：
         // 第一个参数Activity/Fragment； 第二个request_code； 第三个允许选择照片的数量，不填可以无限选择。
-        Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO, 9, 3, Album.ANDROIDTYPE);
+        Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO, 9, 4, Album.IOSTYPE);
 
         // 2. 使用默认风格，不指定选择数量：
         // Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO); // 第三个参数不填的话，可以选择无数个。

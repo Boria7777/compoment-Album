@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="66dp"
+    android:background="?selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/iv_gallery_preview_image"
+        android:layout_width="53dp"
+        android:layout_height="43dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+        android:contentDescription="@string/album_title_activity_gallery"
+        android:scaleType="centerCrop" />
+
+    <android.support.v7.widget.AppCompatRadioButton
+        android:id="@+id/rb_gallery_preview_check"
+        style="@style/AlbumWrapContent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/forderName"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="16sp"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@id/iv_gallery_preview_image"
+        android:layout_toRightOf="@id/iv_gallery_preview_image" />
+
+
+    <TextView
+        android:id="@+id/fordersize"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@id/forderName"
+        android:layout_toRightOf="@id/forderName" />
+
+    <TextView
+        android:id="@+id/tv_gallery_preview_title"
+        style="@style/AlbumWrapContent.WidthMatchParent"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/album_dp_10"
+        android:layout_marginLeft="@dimen/album_dp_10"
+        android:layout_marginRight="@dimen/album_dp_10"
+        android:layout_marginStart="@dimen/album_dp_10"
+        android:layout_toEndOf="@id/iv_gallery_preview_image"
+        android:layout_toLeftOf="@id/rb_gallery_preview_check"
+        android:layout_toRightOf="@id/iv_gallery_preview_image"
+        android:layout_toStartOf="@id/rb_gallery_preview_check"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:visibility="gone" />
+
+    <ImageView
+        style="@style/AlbumWrapContent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/arrow_right"
+       />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#eef0f1"
+        android:layout_height="0.5dp"></LinearLayout>
+
+</RelativeLayout>

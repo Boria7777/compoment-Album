@@ -6,7 +6,7 @@
  * Copyright © www.moresing.com. All Rights Reserved
  *
  */
-package com.yanzhenjie.album.sample;
+package com.royasoft.component.album.sample;
 
 import android.app.Activity;
 import android.os.Build.VERSION;

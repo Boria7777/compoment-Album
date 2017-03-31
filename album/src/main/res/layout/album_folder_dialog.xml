@@ -11,6 +11,7 @@
     <include layout="@layout/album_fragment_toorbar" />
 
     <android.support.v7.widget.RecyclerView
+        android:overScrollMode="never"
         android:id="@+id/content_list"
         style="@style/AlbumWrapContent.WidthMatchParent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
