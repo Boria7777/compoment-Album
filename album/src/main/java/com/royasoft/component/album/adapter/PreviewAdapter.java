@@ -27,9 +27,19 @@ import com.royasoft.component.album.widget.PhotoViewAttacher;
 
 import java.util.List;
 
-/**
- * Created by Yan Zhenjie on 2016/10/19.
- */
+
+/***********************************************************************************************
+ * 类名称:
+ * 类描述:
+ * 创建人:   包勇 2017/3/29.
+ * 创建时间:   2017/3/29.
+ * 创建备注：
+ * 创建版本:
+ * 修改人:
+ * 修改时间:
+ * 修改备注:
+ *
+ ************************************************************************************************/
 public class PreviewAdapter extends PagerAdapter {
 
     private List<AlbumImage> mAlbumImages;

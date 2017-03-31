@@ -28,10 +28,20 @@ import com.royasoft.component.album.util.SelectorUtils;
 
 import java.util.List;
 
-/**
- * <p>相册文件夹内容显示适配器。</p>
- * Created by Yan Zhenjie on 2016/10/18.
- */
+
+/***********************************************************************************************
+ * 类名称:   <p>相册文件夹内容显示适配器。</p>
+ * 类描述:
+ * 创建人:   包勇 2017/3/29.
+ * 创建时间:   2017/3/29.
+ * 创建备注：
+ * 创建版本:
+ * 修改人:
+ * 修改时间:
+ * 修改备注:
+ *
+ ************************************************************************************************/
+
 public class AlbumContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_BUTTON = 1;

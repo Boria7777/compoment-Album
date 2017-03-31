@@ -57,10 +57,18 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * <p>全局相册，选择图片入口。</p>
- * Created by Yan Zhenjie on 2016/10/17.
- */
+/***********************************************************************************************
+ * 类名称:  <p>全局相册，选择图片入口。</p>
+ * 类描述:
+ * 创建人:   包勇 2017/3/29.
+ * 创建时间:   2017/3/29.
+ * 创建备注：
+ * 创建版本:
+ * 修改人:
+ * 修改时间:
+ * 修改备注:
+ *
+ ************************************************************************************************/
 public class AlbumActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int PERMISSION_REQUEST_STORAGE = 200;

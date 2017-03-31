@@ -17,7 +17,18 @@ import com.royasoft.component.album.Album;
 import com.royasoft.component.album.util.DisplayUtils;
 
 import java.util.List;
-
+/***********************************************************************************************
+ * 类名称:
+ * 类描述:
+ * 创建人:   包勇 2017/3/29.
+ * 创建时间:   2017/3/29.
+ * 创建备注：
+ * 创建版本:
+ * 修改人:
+ * 修改时间:
+ * 修改备注:
+ *
+ ************************************************************************************************/
 public class MainActivity extends AppCompatActivity {
 
     private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 100;
@@ -26,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private View noneView;
 
     private RecyclerView mRecyclerView;
-    private com.royasoft.component.album.sample.GridAdapter mGridAdapter;
+    private GridAdapter mGridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mGridAdapter = new com.royasoft.component.album.sample.GridAdapter(ctx);
+        mGridAdapter = new GridAdapter(ctx);
         mRecyclerView.setAdapter(mGridAdapter);
     }
 
@@ -65,7 +76,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void selectImage() {
         // 1. 使用默认风格，并指定选择数量：
-        // 第一个参数Activity/Fragment； 第二个request_code； 第三个允许选择照片的数量，不填可以无限选择。
+        // 第一个参数Activity/Fragment；
+        // 第二个request_code；
+        // 第三个允许选择照片的数量，不填可以无限选择。
+        // 第四个每一行Item数量，不填可以无限选择。
+        // 第五个选择样式
         Album.startAlbum(this, ACTIVITY_REQUEST_SELECT_PHOTO, 9, 4, Album.IOSTYPE);
 
         // 2. 使用默认风格，不指定选择数量：

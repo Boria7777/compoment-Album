@@ -25,9 +25,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by Yan Zhenjie on 2016/10/30.
- */
+
+/***********************************************************************************************
+ * 类名称:
+ * 类描述:
+ * 创建人:   包勇 2017/3/29.
+ * 创建时间:   2017/3/29.
+ * 创建备注：
+ * 创建版本:
+ * 修改人:
+ * 修改时间:
+ * 修改备注:
+ *
+ ************************************************************************************************/
 public class AlbumUtils {
 
     public static void startCamera(Activity activity, int requestCode, File outPath) {

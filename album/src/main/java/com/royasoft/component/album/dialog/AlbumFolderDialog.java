@@ -31,9 +31,19 @@ import com.royasoft.component.album.util.SelectorUtils;
 
 import java.util.List;
 
-/**
- * Created by Yan Zhenjie on 2016/10/18.
- */
+
+/***********************************************************************************************
+ * 类名称:
+ * 类描述:
+ * 创建人:   包勇 2017/3/29.
+ * 创建时间:   2017/3/29.
+ * 创建备注：
+ * 创建版本:
+ * 修改人:
+ * 修改时间:
+ * 修改备注:
+ *
+ ************************************************************************************************/
 public class AlbumFolderDialog extends BottomSheetDialog {
 
     private int checkPosition = 0;
